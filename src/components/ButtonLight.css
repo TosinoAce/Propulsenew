@@ -1,0 +1,15 @@
+.buttonLight{
+    width: fit-content;
+    padding: 10px 15px;
+    background-color: white;
+    color: #bd7d1b;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+    border: 1px solid #e2e9e8;
+    transition: 0.4s ease-in-out;
+}
+.buttonLight:hover{
+    transform: scale(1.1);
+}

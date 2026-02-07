@@ -1,0 +1,38 @@
+.AmbitionContainer{
+    width: 100%;
+    min-height: 100vh;
+    padding: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#AmbitionImageContainer{
+    width: 40%;
+    height: 100%;
+}
+#AmbitionTextContainer{
+    width: 50%;
+}
+#AmbitionImageContainer img{
+    width: 100%;
+    height: 100%;
+}
+#AmbitionTextContainer span{
+    font-size: 11px;
+    margin-bottom: 30px;
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+}
+#AmbitionTextContainer h2{
+    font-size: 40px;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+    margin-bottom: 30px;
+}
+#AmbitionTextContainer p{
+    font-size: 14px;
+    color: #0000007c;
+    margin-bottom: 30px;
+    padding-right: 30px;
+    line-height: 20px;
+}

@@ -1,0 +1,40 @@
+#filterContainer{
+    position: absolute;
+    width: 420px;
+    height: 150px;
+    background-color: #ffffff;
+    border-radius: 23px;
+    bottom: 5%;
+    padding: 15px 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: -8px -8px 15px rgba(255, 2255, 255, 0.1),
+    8px 8px 15px rgba(0, 0, 0, 0.2);
+    font-family: "Lato", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#filterContainer span{
+    font-size: 40px;
+    font-weight: bold;
+    color: #bd7d1b;
+}
+#filterContainer > div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 15px;
+}
+#filterContainer > div > p{
+    font-size: 12px;
+    text-align: center;
+}
+#filterContainer > p{
+    font-size: 11px;
+    text-align: center;
+    font-weight: bold;
+}

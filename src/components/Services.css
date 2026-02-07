@@ -1,0 +1,113 @@
+.services{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    padding: 50px;
+    text-align: center;
+}
+#serviceImgContainer{
+    position: relative;
+    width: 55%;
+    background-color: #f2faf9;
+    border-radius: 18px;
+}
+#servicesImage{
+    width: 100%;
+    height: 100%;
+}
+#serviceImgContainer p{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+}
+#serviceTextContainer{
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+#featuresHeading{
+    font-size: 10px;
+    font-weight: bold;
+    font-family: "Inter", serif;
+    margin-bottom: 15px;
+}
+#serviceTextContainer h2{
+    font-size: 35px;
+    margin-bottom: 20px;
+    font-family: "Lato", sans-serif;
+}
+#featuresText{
+    font-size: 12px;
+    font-family: "Inter", serif;
+    font-weight: 400;
+    padding: 0 75px;
+    line-height: 20px;
+}
+#Personalized{
+    position: absolute;
+    background-color: white;
+    color: #BD7D1B;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #e2e9e8;
+    right: -10%;
+    top: 10%;
+    font-size: 12px;
+    user-select: none;
+}
+#PersonalizedButton{
+    position: absolute;
+    width: 25px;
+    right: 28%;
+    top: 15%;
+    user-select: none;
+}
+.featuresBlock{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 5px;
+    padding: 8px 20px;
+    background-color: #9595952f;
+    color: #959595;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Inter", serif;
+    cursor: pointer;
+    user-select: none;
+}
+.featuresBlock.active{
+    color: #BD7D1B;
+    background-color: #bd7c1b46
+}
+.featuresBlock img{
+    width: 16px;
+}
+.featuresList{
+    margin-top: 40px;
+    display: flex;
+    gap: 30px;
+    align-content: center;
+}
+.featuresListTwo{
+    margin-top: 15px;
+    margin-bottom: 130px;
+    display: flex;
+    gap: 30px;
+    align-content: center;
+}
+#serviceArrow{
+    position: absolute;
+    user-select: none;
+    right: 23%;
+    bottom: 7%;
+}

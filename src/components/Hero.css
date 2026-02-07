@@ -1,0 +1,49 @@
+.hero{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    padding: 15px 30px 30px 30px;
+    background-color: #f2faf9;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+#coverText{
+    display: flex;
+    flex-direction: column;
+    padding: 40px ;
+    height: 100%;
+    justify-content: center;
+}
+#coverImg{
+    width: 38%;
+    height: 100%;
+    background-image: url(/Vector-1.png);
+    background-position: center;
+    background-size: cover;
+    border-radius: 8px;
+}
+#coverText h2{
+    font-size: 50px;
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+}
+#coverText h2 span{
+    color: #bd7d1b;
+}
+#coverText p{
+    width: 491px;
+    font-family: "Lato" sans-serif;
+    font-size: 14px;
+    line-height: 140%;
+    margin-right: 150px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+#arrow{
+    position: absolute;
+    top: 12%;
+    left: 42%;
+    width: 150px;
+    user-select: none;
+}

@@ -1,0 +1,19 @@
+#curationContainer{
+    width: 100%;
+    height: 100vh;
+    padding: 50px;
+    background-color: #f2faf9;
+}
+#curationContainer h2{
+    font-size: 40px;
+    font-family: "Lato", sans-serif;
+    margin-bottom: 40px;
+}
+#curationContainer h2 span{
+    color: #bd7d1b;
+}
+#curationImageContainer{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}

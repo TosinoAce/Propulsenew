@@ -1,0 +1,45 @@
+.PCard{
+    min-width: 300px;
+    max-width: 300px;
+    padding: 15px;
+}
+.Pcard-Img{
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 18px;
+    padding: 2px;
+    border: 1px solid #d1d1d1;
+}
+.Pcard-Img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+    object-position: center;
+}
+.p-Location{
+    font-size: 10px;
+    margin: 5px 0;
+}
+.p-Name{
+    font-size: 19px;
+    margin-top: 5px;
+}
+.p-Details {
+    font-size: 12px;
+    margin-top: 18px;
+}
+.P-Button{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+.p-Price{
+    font-size: 20px;
+    color: #D1820A;
+    font-weight: bold;
+}

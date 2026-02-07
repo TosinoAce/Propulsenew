@@ -1,0 +1,146 @@
+#catalogContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 50px;
+    background-color: #f2faf9;
+    position: relative;
+}
+#dollar{
+    position: absolute;
+    top: 28px;
+    right: 20%;
+    width: 26px;
+}
+#catalogContainer > p{
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-family: "Lat0", sans-serif;
+    font-weight: 600;
+}
+.apartmentName{
+    font-family: "Lato", sans-serif;
+    margin: 10px 0;
+    font-size: 12px;
+}
+.apartmentLocation{
+    font-family: "Lato", sans-serif;
+    margin: 10px 0;
+    font-size: 11px;
+}
+#catalogContainer > h2{
+    text-align: center;
+    font-size: 35px;
+    font-family: "Lato", sans-serif;
+    margin-bottom: 70px;
+}
+#catalogCardContainer{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.catalogCards{
+    width: 250px;
+    height: 320px;
+    border-radius: 18px;
+    background-color: white;
+    position: relative;
+    overflow: hidden;
+}
+#btnContainer{
+    width: 250px;
+    height: 320px;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#exploreCard{
+    width: 250px;
+    height: 320px;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+}
+#exploreImage{
+    width: 240px;
+    height: 220px;
+    border-radius: 18px;
+    background-image: url(/Group6.png);
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+#exploreText{
+    width: 200px;
+    height: 150px;
+    border-radius: 18px;
+    background-color: white;
+    position: absolute;
+    overflow: hidden;
+    bottom: 0;
+    padding: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#exploreBar{
+    width: 100px;
+    height: 10px;
+    margin-bottom: 10px;
+    background-color: #BD7D1B;
+    border-radius: 18px;
+}
+#exploreText > p{
+    margin-bottom: auto;
+    font-weight: bold;
+    font-family: "Lato", sans-serif;
+}
+.catalogCards > img{
+    width: 100%;
+    height: 100%;
+    object-position: center;
+}
+.amount{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #BD7D1B;
+    padding: 8px 16px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 12px;
+    font-family: "Inter", serif;
+}
+.catalogArrow{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+.catalogArrow:hover{
+    transform: rotate(360deg);
+}

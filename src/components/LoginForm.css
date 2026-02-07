@@ -1,0 +1,82 @@
+.LoginContainer {
+  width: 100%;
+  height: 100vh;
+  padding: 50px 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.LoginContainer > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  gap: 20px;
+  position: relative;
+}
+.LoginContainer h2 {
+  font-size: 30px;
+  font-weight: bold;
+}
+.First {
+  background-color: #d28611;
+  border-top-left-radius: 18px;
+  border-bottom-left-radius: 18px;
+  color: white;
+}
+.Second {
+  width: 60%;
+  background-color: #fcf8f1;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.B-Logo {
+  position: absolute;
+  top: 13px;
+  left: 0px;
+  width: 80px;
+  cursor: pointer;
+}
+.Second > form {
+  width: 100%;
+  padding: 0 100px;
+}
+.Second > form > input {
+  width: 100%;
+  font-size: 12px;
+  margin-bottom: 2px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.Second > p {
+  font-size: 10px;
+}
+.G-signIn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 26px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.G-signIn img {
+  width: 20px;
+}
+.error {
+  font-family: sans-serif;
+  color: red;
+  text-align: left;
+  font-size: 10px;
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+#fullname{
+  margin-bottom: 15px;
+}

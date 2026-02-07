@@ -1,0 +1,54 @@
+.property-body{
+    width: 100%;
+    min-height: 100vh;
+    padding: 120px 50px 50px 50px;
+}
+.property-body h2{
+    font-size: 50px;
+    color: #D1820A;
+    margin-bottom: 15px;
+}
+.property-body > h3{
+    font-family: "Lato", sans-serif;
+    font-size: 18px;
+    color: #0E0E2C;
+    margin-bottom: 20px;
+}
+.property-body > h3 span{
+    color: #D1820A;
+}
+.P-cardContainer {
+    width: 100%;
+    min-height: 100px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pageNav{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    gap: 10px;
+    margin-top: 15px;
+}
+.pageNav div{
+    width: 40px;
+    min-height: 40px;
+    padding: 10px;
+    background-color: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+.pageNav div:hover{
+    color: #D1820A;
+}
+.pageNav div img{
+    object-fit: contain;
+}
