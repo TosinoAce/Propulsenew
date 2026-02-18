@@ -26,12 +26,13 @@
     font-family: "Lato", sans-serif;
 }
 #serviceTextContainer{
-    padding: 0 100px;
+    padding: 0 50px; /* Reduced from 100px */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
+    width: 45%;
 }
 #featuresHeading{
     font-size: 10px;
@@ -110,4 +111,48 @@
     user-select: none;
     right: 23%;
     bottom: 7%;
+}
+
+@media screen and (max-width: 1024px) {
+    .services{
+        padding: 50px 30px;
+        gap: 30px;
+    }
+    #serviceTextContainer{
+        padding: 0 20px;
+    }
+    #featuresText{
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .services{
+        flex-direction: column;
+        height: auto;
+        padding: 50px 20px;
+        gap: 30px;
+    }
+    #serviceImgContainer{
+        width: 100%;
+        height: 300px;
+    }
+    #serviceTextContainer{
+        padding: 0;
+        width: 100%;
+    }
+    #featuresText{
+        padding: 0;
+    }
+    .featuresList, .featuresListTwo{
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+    #serviceArrow{
+        display: none;
+    }
+    #PersonalizedButton{
+        display: none;
+    }
 }

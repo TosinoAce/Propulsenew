@@ -7,6 +7,7 @@ import "./Navbar.css";
 const Navbar = () => {
   const { user, logout } = useAuth(); // ✅ Get user and logout from context
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -19,17 +20,23 @@ const Navbar = () => {
     <header>
       <div className="Logo">
         <img src="/propulseLogo.png" alt="Propulse logo" />
-        <ul>
-          <Link to="/">
+
+        {/* Mobile Menu Toggle */}
+        <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          ☰
+        </button>
+
+        <ul className={mobileMenuOpen ? "nav-links mobile-open" : "nav-links"}>
+          <Link to="/" onClick={() => setMobileMenuOpen(false)}>
             <button>Home</button>
           </Link>
-          <Link to="/property">
+          <Link to="/property" onClick={() => setMobileMenuOpen(false)}>
             <button>Properties</button>
           </Link>
-          <Link to="/landbanking">
+          <Link to="/landbanking" onClick={() => setMobileMenuOpen(false)}>
             <button>Land Banking</button>
           </Link>
-          <Link to="/about">
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)}>
             <button>About Us</button>
           </Link>
         </ul>

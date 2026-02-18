@@ -144,3 +144,30 @@
 .catalogArrow:hover{
     transform: rotate(360deg);
 }
+
+@media screen and (max-width: 1024px) {
+    #catalogContainer{
+        padding: 50px 30px;
+    }
+    #catalogCardContainer{
+        justify-content: center;
+        gap: 30px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #catalogContainer{
+        padding: 50px 20px;
+    }
+    #catalogCardContainer{
+        justify-content: center;
+        gap: 30px;
+    }
+    #dollar{
+        right: 10%;
+    }
+    #catalogContainer > h2{
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+}

@@ -70,3 +70,21 @@ footer ul li:hover:after{
     width: 100%;
     opacity: 1;
 }
+
+@media screen and (max-width: 768px) {
+    .footerLinks{
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 50px;
+    }
+    .footerLinks p{
+        font-size: 24px;
+        text-align: center;
+    }
+    footer ul{
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+    }
+}

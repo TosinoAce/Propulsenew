@@ -1,5 +1,4 @@
 {
-  
   "savedProperties": [],
   "users": [
     {
@@ -59,6 +58,12 @@
       "email": "mail@gmail.com",
       "fullName": "Adewale Ayuba",
       "password": "12344321"
+    },
+    {
+      "email": "adedapobello@gmail.com",
+      "fullName": "Adedapo",
+      "password": "12345678",
+      "id": "ZbPphO0"
     }
   ],
   "properties": [
@@ -223,5 +228,4 @@
       "realtorContact": "+2348109876543"
     }
   ]
-
 }

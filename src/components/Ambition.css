@@ -3,8 +3,9 @@
     min-height: 100vh;
     padding: 50px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    gap: 50px; 
 }
 #AmbitionImageContainer{
     width: 40%;
@@ -35,4 +36,39 @@
     margin-bottom: 30px;
     padding-right: 30px;
     line-height: 20px;
+}
+
+@media screen and (max-width: 1024px) {
+    .AmbitionContainer{
+        justify-content: space-between;
+        padding: 50px 20px;
+        gap: 30px;
+    }
+    #AmbitionTextContainer span{
+        margin-bottom: 20px;
+    }
+    #AmbitionTextContainer h2{
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+    #AmbitionTextContainer p{
+        margin-bottom: 20px;
+        padding-right: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .AmbitionContainer{
+        flex-direction: column-reverse;
+        height: auto;
+        padding: 50px 20px;
+        gap: 30px;
+    }
+    #AmbitionImageContainer, #AmbitionTextContainer{
+        width: 100%;
+        text-align: center;
+    }
+    #AmbitionTextContainer p{
+        padding-right: 0;
+    }
 }
