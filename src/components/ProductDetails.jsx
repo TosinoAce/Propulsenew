@@ -3,12 +3,13 @@ import { useEffect, useState } from "react"
 import MainLayout from "../layout/MainLayout"
 import Button from "./button"
 import ButtonLight from "./ButtonLight"
+import { useAuth } from "../auth/AuthContext"
 import "./ProductDetails.css"
 
 const ProductDetails = () => {
   const { id } = useParams()
-  const userId = "3"
-
+  const { user } = useAuth()
+  
   const [property, setProperty] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -40,19 +41,26 @@ const ProductDetails = () => {
         setLoading(false)
       })
 
-    fetch(
-      `http://localhost:5000/savedProperties?userId=${userId}&propertyId=${Number(id)}`
-    )
-      .then(res => res.json())
-      .then(data => {
-        if (data.length > 0) {
-          setIsSaved(true)
-          setSavedRecordId(data[0].id)
-        }
-      })
-  }, [id])
+    if (user) {
+        fetch(
+        `http://localhost:5000/savedProperties?userId=${user.id}&propertyId=${Number(id)}`
+        )
+        .then(res => res.json())
+        .then(data => {
+            if (data.length > 0) {
+            setIsSaved(true)
+            setSavedRecordId(data[0].id)
+            }
+        })
+    }
+  }, [id, user])
 
   const handleSaveToggle = () => {
+    if (!user) {
+        alert("Please log in to save properties.")
+        return
+    }
+
     if (isSaved) {
       fetch(`http://localhost:5000/savedProperties/${savedRecordId}`, {
         method: "DELETE",
@@ -67,7 +75,7 @@ const ProductDetails = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: userId,
+          userId: user.id,
           propertyId: Number(id),
         }),
       })
@@ -76,6 +84,7 @@ const ProductDetails = () => {
           setIsSaved(true)
           setSavedRecordId(data.id)
         })
+        .catch(err => console.error("Save failed:", err));
     }
   }
 

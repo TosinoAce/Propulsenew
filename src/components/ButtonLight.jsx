@@ -2,7 +2,7 @@ import "./ButtonLight.css"
 
 const ButtonLight = function ButtonLight(props){
   return (
-    <button className="buttonLight">{props.name}</button>
+    <button className="buttonLight" onClick={props.action}>{props.name}</button>
   )
 }
 
