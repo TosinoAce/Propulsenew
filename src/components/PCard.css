@@ -1,6 +1,6 @@
 .PCard{
-    min-width: 350px;
-    max-width: 350px;
+    width: 350px; /* Fallback for older browsers */
+    width: 100%;
     padding: 15px;
 }
 .Pcard-Img{

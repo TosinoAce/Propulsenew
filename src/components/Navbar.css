@@ -20,7 +20,7 @@ header img:hover{
 .Logo{
     width: 60%;
     display: flex;
-    /* gap: 150px;  Removed fixed large gap */
+    /* gap: 150px;*/
     justify-content: space-between;
     align-items: center;
 }
@@ -110,6 +110,14 @@ header ul button:hover:after{
     margin-top: 10px;
 }
 
+.mobile-auth {
+    display: none;
+}
+.desktop-auth {
+    display: flex;
+    align-items: center;
+}
+
 .mobile-menu-toggle {
     display: none;
     background: none;
@@ -154,7 +162,30 @@ header ul button:hover:after{
         display: flex;
     }
 
-    .profile-menu {
-        display: none; /* Hide profile menu on mobile for now, or add to mobile menu */
+    .desktop-auth {
+        display: none;
+    }
+
+    .mobile-auth {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 15px;
+        border-top: 1px solid #ccc;
+        padding-top: 15px;
+        gap: 10px;
+    }
+    
+    .mobile-user-name {
+        font-family: "Lato", sans-serif;
+        font-style: italic;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .mobile-auth button {
+        width: 100%;
+        padding: 10px;
     }
 }

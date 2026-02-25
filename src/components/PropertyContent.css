@@ -21,10 +21,9 @@
     width: 100%;
     min-height: 100px;
     margin-top: 30px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on large desktop */
+    gap: 20px;
 }
 .pageNav{
     width: 100%;
@@ -51,4 +50,35 @@
 }
 .pageNav div img{
     object-fit: contain;
+}
+
+@media screen and (max-width: 1024px) {
+    .property-body{
+        padding: 100px 30px 30px 30px;
+    }
+    .P-cardContainer {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet/small desktop */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .property-body{
+        padding: 100px 20px 30px 20px;
+    }
+    .property-body h2{
+        font-size: 35px;
+        text-align: center;
+    }
+    .property-body > h3{
+        text-align: center;
+    }
+    .P-cardContainer {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile/tablet */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .P-cardContainer {
+        grid-template-columns: 1fr; /* 1 column on small phones */
+    }
 }

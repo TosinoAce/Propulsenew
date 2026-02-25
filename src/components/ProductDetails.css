@@ -86,14 +86,15 @@
   font-size: 30px;
 }
 .contactFormModal{
-  position: absolute;
+  position: fixed;
   inset: 0 0 0 0;
-  background-color: #f1f1f1;
+  background-color: #f1f1f1f0;
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 .contactFormContainer{
   width: 700px;
@@ -130,4 +131,42 @@
 }
 textarea{
   height: 170px;
+}
+
+@media screen and (max-width: 768px) {
+  .propertyDetailsContainer {
+    padding: 100px 20px 30px 20px;
+  }
+  .productHeading {
+    gap: 20px;
+  }
+  .productHeading h2 {
+    font-size: 28px;
+  }
+  .propertyDetails {
+    flex-direction: column;
+    padding: 0;
+    gap: 30px;
+  }
+  .propertyImages {
+    width: 100%;
+    height: auto;
+    grid-template-rows: auto;
+  }
+  .PropertyInfo {
+    width: 100%;
+  }
+  .contactFormContainer {
+    width: 90%;
+  }
+  .contactFormContainer form {
+    width: 100%;
+  }
+  #PropertyInfo1 div {
+    flex-direction: column;
+    gap: 10px;
+  }
+  #infoPrice {
+    font-size: 24px;
+  }
 }

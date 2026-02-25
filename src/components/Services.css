@@ -155,4 +155,8 @@
     #PersonalizedButton{
         display: none;
     }
+
+    #Personalized{
+        right: 0;
+    }
 }

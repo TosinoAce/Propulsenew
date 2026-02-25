@@ -94,3 +94,50 @@
   margin-top: 20px;
   margin-bottom: 70px;
 }
+
+@media screen and (max-width: 768px) {
+  .contact-wrapper {
+    padding: 100px 20px 30px 20px;
+  }
+  .contact-Head {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .contact-Head-first {
+    width: 100%;
+    text-align: center;
+  }
+  .contact-Head-second {
+    width: 100%;
+  }
+  .contact-Head > div > h2 {
+    font-size: 35px;
+    text-align: center;
+  }
+  .contact-card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact-card {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+  }
+  .FAQ > h3 {
+    font-size: 35px;
+    text-align: center;
+  }
+  .GTF {
+    max-width: 100%;
+    padding: 20px 10px;
+  }
+  .GTF h2 {
+    font-size: 28px;
+    text-align: center;
+  }
+  .GTF input,
+  .GTF textarea,
+  .GTF button {
+    width: 100%;
+  }
+}

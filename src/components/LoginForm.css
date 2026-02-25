@@ -80,3 +80,38 @@
 #fullname{
   margin-bottom: 15px;
 }
+
+@media screen and (max-width: 1024px) {
+  .LoginContainer {
+    padding: 50px 50px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .LoginContainer {
+    padding: 50px 20px;
+    height: auto;
+    flex-direction: column;
+  }
+  .First {
+    width: 100%;
+    border-radius: 18px 18px 0 0;
+    padding: 40px 20px;
+  }
+  .Second {
+    width: 100%;
+    border-radius: 0 0 18px 18px;
+    padding: 40px 20px;
+  }
+  .Second > form {
+    padding: 0;
+  }
+  .Second > form > input {
+    margin-bottom: 10px;
+  }
+  .B-Logo {
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+  }
+}
