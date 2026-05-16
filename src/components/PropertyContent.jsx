@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import supabase from "../lib/supabase";
 import PCard from "./PCard";
 import "./PropertyContent.css";
 
@@ -11,10 +12,19 @@ const PropertyContent = ({ userId }) => {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetch("http://localhost:5000/properties")
-      .then((res) => res.json())
-      .then((data) => setProperties(data))
-      .catch((err) => console.error("Error fetching properties:", err));
+    const fetchProperties = async () => {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*');
+      
+      if (error) {
+        console.error("Error fetching properties:", error);
+      } else {
+        setProperties(data);
+      }
+    };
+
+    fetchProperties();
   }, []);
 
   const filteredProperties = properties.filter((property) => {

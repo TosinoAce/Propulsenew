@@ -1,8 +1,14 @@
 import "./button.css"
 
-const Button = function Button(props){
+const Button = function Button(props) {
   return (
-   <button onClick={props.action} > {props.name}</button>
+    <button
+      onClick={props.action}
+      type={props.type}
+      disabled={props.disabled}
+    >
+      {props.name}
+    </button>
   )
 }
 

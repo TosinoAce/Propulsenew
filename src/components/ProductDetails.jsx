@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
+import supabase from "../lib/supabase"
 import MainLayout from "../layout/MainLayout"
 import Button from "./button"
 import ButtonLight from "./ButtonLight"
@@ -9,7 +10,7 @@ import "./ProductDetails.css"
 const ProductDetails = () => {
   const { id } = useParams()
   const { user } = useAuth()
-  
+
   const [property, setProperty] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -25,68 +26,74 @@ const ProductDetails = () => {
       return
     }
 
-    fetch(`http://localhost:5000/properties/${Number(id)}`)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Property not found")
-        }
-        return res.json()
-      })
-      .then(data => {
-        setProperty(data)
-        setLoading(false)
-      })
-      .catch(err => {
-        setError(err.message)
-        setLoading(false)
-      })
+    const fetchPropertyDetails = async () => {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', Number(id))
+        .single();
 
-    if (user) {
-        fetch(
-        `http://localhost:5000/savedProperties?userId=${user.id}&propertyId=${Number(id)}`
-        )
-        .then(res => res.json())
-        .then(data => {
-            if (data.length > 0) {
-            setIsSaved(true)
-            setSavedRecordId(data[0].id)
-            }
-        })
-    }
+      if (error) {
+        setError(error.message);
+      } else {
+        setProperty(data);
+      }
+      setLoading(false);
+    };
+
+    fetchPropertyDetails();
+
+    const checkSavedProperty = async () => {
+      if (!user) return;
+      const { data, error } = await supabase
+        .from('savedProperties')
+        .select('id')
+        .eq('userId', user.id)
+        .eq('propertyId', Number(id));
+      
+      if (data && data.length > 0) {
+        setIsSaved(true);
+        setSavedRecordId(data[0].id);
+      }
+    };
+
+    checkSavedProperty();
   }, [id, user])
 
-  const handleSaveToggle = () => {
+  const handleSaveToggle = async () => {
     if (!user) {
-        alert("Please log in to save properties.")
-        return
+      alert("Please log in to save properties.");
+      return;
     }
 
     if (isSaved) {
-      fetch(`http://localhost:5000/savedProperties/${savedRecordId}`, {
-        method: "DELETE",
-      }).then(() => {
-        setIsSaved(false)
-        setSavedRecordId(null)
-      })
+      const { error } = await supabase
+        .from('savedProperties')
+        .delete()
+        .eq('id', savedRecordId);
+
+      if (!error) {
+        setIsSaved(false);
+        setSavedRecordId(null);
+      } else {
+        console.error("Failed to unsave:", error);
+      }
     } else {
-      fetch("http://localhost:5000/savedProperties", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          propertyId: Number(id),
-        }),
-      })
-        .then(res => res.json())
-        .then(data => {
-          setIsSaved(true)
-          setSavedRecordId(data.id)
-        })
-        .catch(err => console.error("Save failed:", err));
+      const { data, error } = await supabase
+        .from('savedProperties')
+        .insert([
+          { userId: user.id, propertyId: Number(id) }
+        ])
+        .select();
+
+      if (!error && data && data.length > 0) {
+        setIsSaved(true);
+        setSavedRecordId(data[0].id);
+      } else {
+        console.error("Save failed:", error);
+      }
     }
-  }
+  };
 
   if (loading) return <h2>Loading...</h2>
   if (error || !property) return <h2>{error}</h2>

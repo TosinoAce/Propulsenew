@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "./button";
-import { useAuth } from "../auth/AuthContext"; // ✅ Import useAuth hook
+import { useAuth } from "../auth/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { user, logout } = useAuth(); // ✅ Get user and logout from context
+  const { user, handleLogout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-  const handleLogout = () => {
-    logout();
+  const logout = () => {
+    handleLogout();
     setDropdownOpen(false);
   };
+
+  if (!user) return null;
 
   return (
     <header>
@@ -44,14 +46,14 @@ const Navbar = () => {
           <div className="mobile-auth">
             {user ? (
               <>
-                <h3 className="mobile-user-name">{user.fullName}</h3>
+                <h3 className="mobile-user-name">{user.user_metadata.fullName}</h3>
                 <Link to="/savedproperties" onClick={() => setMobileMenuOpen(false)}>
                   <button>Saved Properties</button>
                 </Link>
                 <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
                   <button>Get in Touch</button>
                 </Link>
-                <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }}>Logout</button>
+                <button onClick={() => { logout(); setMobileMenuOpen(false); }}>Logout</button>
               </>
             ) : (
               <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
@@ -65,7 +67,7 @@ const Navbar = () => {
       <div className="desktop-auth">
         {user ? (
           <div className="profile-menu" onClick={toggleDropdown}>
-            <h3>{user.fullName}</h3> {/* Display the logged-in user's name */}
+            <h3>{user.user_metadata.fullName}</h3>
             <img
               src="/placeholder.png"
               alt="User Avatar"
@@ -80,7 +82,7 @@ const Navbar = () => {
                 <Link to="/contact">
                   <button className="dropdown-nav">Get in Touch</button>
                 </Link>
-                <button onClick={handleLogout}>Logout</button>
+                <button onClick={logout}>Logout</button>
               </div>
             )}
           </div>

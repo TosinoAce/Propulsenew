@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import supabase from "../lib/supabase";
 import MainLayout from "../layout/MainLayout";
 import PCard from "../components/PCard";
 import { useAuth } from "../auth/AuthContext";
@@ -18,23 +18,31 @@ const SavedProperties = () => {
       }
 
       try {
-        const savedRes = await axios.get(
-          `http://localhost:5000/savedProperties?userId=${user.id}`
-        );
+        const { data: savedData, error: savedError } = await supabase
+          .from('savedProperties')
+          .select('*')
+          .eq('userId', user.id);
 
-        if (savedRes.data.length === 0) {
+        if (savedError) throw savedError;
+
+        if (!savedData || savedData.length === 0) {
           setSavedProperties([]);
           setLoading(false);
           return;
         }
 
-        const propsRes = await axios.get(
-          "http://localhost:5000/properties"
-        );
+        const propertyIds = savedData.map(item => item.propertyId);
 
-        const joined = savedRes.data
+        const { data: propsData, error: propsError } = await supabase
+          .from('properties')
+          .select('*')
+          .in('id', propertyIds);
+
+        if (propsError) throw propsError;
+
+        const joined = savedData
           .map(item => {
-            const prop = propsRes.data.find(
+            const prop = propsData.find(
               p => String(p.id) === String(item.propertyId)
             );
             return prop ? { ...prop, savedId: item.id } : null;
@@ -56,7 +64,13 @@ const SavedProperties = () => {
     if (!window.confirm("Are you sure you want to remove this property?")) return;
 
     try {
-        await axios.delete(`http://localhost:5000/savedProperties/${savedId}`);
+        const { error } = await supabase
+          .from('savedProperties')
+          .delete()
+          .eq('id', savedId);
+
+        if (error) throw error;
+        
         setSavedProperties(prev => prev.filter(p => p.savedId !== savedId));
     } catch (err) {
         console.error("Failed to remove property:", err);
