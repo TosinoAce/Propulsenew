@@ -1,21 +1,149 @@
+@import "@fontsource-variable/outfit";
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+/*
+  Propulse design system
+  ----------------------
+  Theme: light only. The logo is a black wordmark, so the page stays on light surfaces.
+  Colour: cool off-white surfaces, off-black ink, and ONE accent (the amber from the logo).
+  Shape: buttons and chips are full pills, cards and images use rounded-3xl, inputs use rounded-xl.
+  Layers (z-index): 40 navbar, 50 modal. Nothing else sets a z-index above 10.
+*/
+@theme {
+  --font-sans: "Outfit Variable", ui-sans-serif, system-ui, sans-serif;
 
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  text-decoration: none;
-  box-sizing: border-box;
-  font-family: "Inter", serif;
+  --color-ink: #15181b;
+  --color-ink-soft: #2b3035;
+  --color-muted: #586169;
+  --color-surface: #f6f8f7;
+  --color-panel: #fdfefd;
+  --color-tint: #ebf0ee;
+  --color-line: #dbe2df;
+  --color-accent: #d28611;
+  --color-accent-deep: #8f560a;
+  --color-accent-soft: #fbefd9;
+  --color-danger: #b3261e;
+  --color-success: #1b7a43;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --shadow-card: 0 1px 2px rgb(21 24 27 / 0.04), 0 12px 32px -12px rgb(21 24 27 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(21 24 27 / 0.05), 0 24px 48px -16px rgb(21 24 27 / 0.2);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
 }
-body{
-  position: relative;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent-deep);
+    outline-offset: 2px;
+  }
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
 }
-.savedContainer{
-  width: 100%;
-  min-height: 100vh;
-  padding: 100px 50px 50px 50px;
+
+@layer components {
+  /* Page gutter used by every section */
+  .shell {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Text inputs, selects and textareas */
+  .field-input {
+    width: 100%;
+    min-height: 2.875rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    background-color: var(--color-panel);
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field-input::placeholder {
+    color: #737c84;
+  }
+  .field-input:hover {
+    border-color: #b9c3bf;
+  }
+  .field-input:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px rgb(210 134 17 / 0.25);
+  }
+  .field-input[aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+  .field-input[readonly] {
+    background-color: var(--color-tint);
+    color: var(--color-muted);
+  }
+  textarea.field-input {
+    min-height: 8rem;
+    resize: vertical;
+  }
+
+  /* Loading placeholder that matches the shape of the final content */
+  .skeleton {
+    border-radius: 0.75rem;
+    background-color: var(--color-tint);
+    background-image: linear-gradient(90deg, transparent 0%, rgb(253 254 253 / 0.8) 50%, transparent 100%);
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    background-position: 200% 0;
+    animation: var(--animate-shimmer);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .skeleton,
+  .animate-marquee {
+    animation: none;
+  }
 }
