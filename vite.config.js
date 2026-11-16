@@ -8,4 +8,17 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        // Libraries change far less often than the site's own code. Keeping them in their own
+        // files means a returning visitor's browser can reuse them after a site update.
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          motion: ['motion/react'],
+          supabase: ['@supabase/supabase-js'],
+        },
+      },
+    },
+  },
 })

@@ -1,17 +1,30 @@
-import Cover from "./components/Cover";
-import Services from "./components/Services";
-import Catalog from "./components/Catalog";
-import Ambition from "./components/Ambition";
-import Curation from "./components/Curation";
 import MainLayout from "./layout/MainLayout";
+import Seo from "./components/Seo";
+import Hero from "./components/home/Hero";
+import Featured from "./components/home/Featured";
+import HowItWorks from "./components/home/HowItWorks";
+import WhyPropulse from "./components/home/WhyPropulse";
+import Ambition from "./components/home/Ambition";
+import Gallery from "./components/home/Gallery";
+import CtaBand from "./components/CtaBand";
+import { getListingStates, useProperties } from "./lib/useProperties";
+
 function App() {
+  const listings = useProperties();
+
   return (
     <MainLayout>
-      <Cover />
-      <Services />
-      <Catalog />
+      <Seo />
+      <Hero
+        slides={listings.properties.filter((listing) => listing.status !== "sold" && listing.propertyImage).slice(0, 4)}
+        states={getListingStates(listings.properties)}
+      />
+      <Featured {...listings} />
+      <HowItWorks properties={listings.properties} loading={listings.loading} />
+      <WhyPropulse />
       <Ambition />
-      <Curation/>
+      <Gallery />
+      <CtaBand />
     </MainLayout>
   );
 }

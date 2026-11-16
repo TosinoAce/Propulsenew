@@ -1,0 +1,54 @@
+# Netlify build settings for Propulse (a Vite + React single-page app).
+# Supabase address and key are set as environment variables in the Netlify dashboard,
+# not here, because this file is committed.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Every address is handled by the app's own router, so deep links such as
+# /property/5 or /blog/some-post load the app instead of a Netlify 404.
+# Real files (images, sitemap.xml, robots.txt) are still served as files.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Built code and styles have the content hash in their names, so browsers can keep them for a year
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Photos and their compressed copies rarely change; keep them for a week
+[[headers]]
+  for = "/listings/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+[[headers]]
+  for = "/photos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+[[headers]]
+  for = "/team/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+# Address used in the sitemap. Netlify already hides Deploy Previews from search engines.
+# Change this to the real domain once one is connected.
+[context.production.environment]
+  SITE_URL = "https://propulsenew.netlify.app"
+[context.deploy-preview.environment]
+  SITE_URL = "https://propulsenew.netlify.app"
+[context.branch-deploy.environment]
+  SITE_URL = "https://propulsenew.netlify.app"

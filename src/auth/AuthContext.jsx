@@ -1,119 +1,102 @@
 import { createContext, useState, useContext, useEffect } from "react";
-// import { AuthUser } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import supabase from "../lib/supabase";
+import { getRedirectTarget } from "../lib/redirect";
 
 export const defaultProvider = {
   user: null,
   setUser: () => null,
   isAuthLoading: false,
+  isAdmin: false,
+  isAdminLoading: false,
   handleLogout: () => { },
 };
 
 export const AuthContext = createContext(defaultProvider);
 
+const AUTH_PAGES = ["/login", "/signup"];
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
-  const [session, setSession] = useState(null);
+  // `null` means "not checked yet" for the current user
+  const [adminState, setAdminState] = useState({ userId: null, isAdmin: null });
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      setIsAuthLoading(true);
+    let active = true;
 
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        const { data, error } = await supabase.auth.getSession();
-        if (error) {
-          console.error("Session error:", error)
-          setUser(null)
-          setSession(null)
-          return
-        }
-
-        const session = data.session;
-        setSession(session)
-        setUser(session?.user ?? null)
-
-      } catch (error) {
-        console.error("Auth error:", error)
-        setUser(null)
-      } finally {
-        setIsAuthLoading(false)
-      }
-    })();
+    supabase.auth
+      .getSession()
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) console.error("Session error:", error);
+        setUser(data?.session?.user ?? null);
+      })
+      .catch((error) => {
+        console.error("Auth error:", error);
+      })
+      .finally(() => {
+        if (active) setIsAuthLoading(false);
+      });
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      console.log("event", _event);
-      console.log("session", session);
-      setSession(session);
-      setUser(session?.user ?? null)
-      if (!session) {
-        setUser(null);
-        navigate("/login");
-        return;
-      }
-      // setUser(session.user);
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
 
-      if (_event === "SIGNED_IN" && window.location.pathname === "/login") {
-        navigate("/")
+      // Logged-in users have no business on the login / signup pages
+      if (event === "SIGNED_IN" && AUTH_PAGES.includes(window.location.pathname)) {
+        navigate(getRedirectTarget(), { replace: true });
       }
     });
 
-
-    // const savedUser = localStorage.getItem("user");
-    // if (savedUser) {
-    //   const userData = JSON.parse(savedUser);
-
-    //   // Ensure the user has savedProperties (initialize as empty array if not present)
-    //   if (!userData.savedProperties) {
-    //     userData.savedProperties = [];
-    //   }
-
-    //   setUser(userData);
-    // }
-    return () => subscription.unsubscribe();
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const login = async (email, password) => {
-  //   try {
-  //     const res = await fetch(`http://localhost:5000/users?email=${email}&password=${password}`);
-  //     const data = await res.json();
+  // Look up whether the signed-in account is a Propulse admin. This only decides what the
+  // interface shows; the database enforces the same rule on every admin action.
+  const userId = user?.id ?? null;
+  useEffect(() => {
+    if (!userId) return;
 
-  //     if (data.length > 0) {
-  //       const loggedInUser = data[0];
+    let active = true;
+    supabase
+      .from("user_profile")
+      .select("is_admin")
+      .eq("auth_user", userId)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) console.error("Admin check failed:", error);
+        setAdminState({ userId, isAdmin: Boolean(data?.is_admin) });
+      });
 
-  //       // Make sure savedProperties is initialized
-  //       if (!loggedInUser.savedProperties) {
-  //         loggedInUser.savedProperties = []; // Initialize if not already present
-  //       }
+    return () => {
+      active = false;
+    };
+  }, [userId]);
 
-  //       setUser(loggedInUser);
-  //       localStorage.setItem("user", JSON.stringify(loggedInUser));
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   } catch (error) {
-  //     console.error("Login failed:", error);
-  //     return false;
-  //   }
-  // };
+  const adminKnown = adminState.userId === userId && adminState.isAdmin !== null;
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error("Logout failed:", error);
+    navigate("/");
   };
 
-  var value = {
+  const value = {
     user,
     setUser,
     isAuthLoading,
+    isAdmin: Boolean(userId) && adminKnown && adminState.isAdmin,
+    isAdminLoading: isAuthLoading || (Boolean(userId) && !adminKnown),
     handleLogout,
-  }
+  };
 
   return (
     <AuthContext.Provider value={value}>

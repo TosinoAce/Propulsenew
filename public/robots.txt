@@ -1,0 +1,9 @@
+# Propulse
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /savedproperties
+
+Sitemap: https://propulsenew.netlify.app/sitemap.xml
