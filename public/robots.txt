@@ -6,4 +6,4 @@ Disallow: /login
 Disallow: /signup
 Disallow: /savedproperties
 
-Sitemap: https://propulse.example.com/sitemap.xml
+Sitemap: https://propulsenew.netlify.app/sitemap.xml
