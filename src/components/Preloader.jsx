@@ -1,73 +1,126 @@
-import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
+import { animate, motion, useReducedMotion } from "motion/react";
+import BrandMark from "./BrandMark";
 
 const EASE = [0.16, 1, 0.3, 1];
+const LETTERS = "PROPULSE".split("");
+
+/** How long the opening sequence takes to count to 100, in seconds. */
+const PRELOADER_SECONDS = 1.9;
 
 /**
- * Opening screen shown once per page load. It draws the two halves of the brand:
- * a roofline (property) and a heartbeat line (pulse), then the logo settles in and
- * the whole screen lifts away like a shutter. Render inside <AnimatePresence>.
+ * Opening screen shown once per page load, on a dark stage:
+ * the roof-and-heartbeat mark draws itself, the brand name rises letter by letter,
+ * a heartbeat line sweeps the full width of the window, and a counter runs to 100.
+ * When the page is ready the stage lifts away with a curved lower edge, like a curtain.
+ * Render inside <AnimatePresence>.
  */
-const Preloader = () => (
-  <motion.div
-    role="status"
-    aria-label="Loading Propulse"
-    className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 bg-surface"
-    exit={{ y: "-100%" }}
-    transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
-  >
-    <svg viewBox="0 0 240 130" className="w-56 sm:w-72" fill="none" aria-hidden="true">
-      {/* Roofline */}
-      <motion.path
-        d="M24 76 L120 22 L216 76"
-        stroke="var(--color-ink)"
-        strokeWidth="7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 0.8, ease: EASE }}
-      />
-      {/* Chimney */}
-      <motion.path
-        d="M170 50 V30 H186 V59"
-        stroke="var(--color-ink)"
-        strokeWidth="7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 0.45, delay: 0.55, ease: EASE }}
-      />
-      {/* Heartbeat */}
-      <motion.path
-        d="M24 106 H86 L99 82 L115 124 L131 88 L141 106 H216"
-        stroke="var(--color-accent)"
-        strokeWidth="6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 0.9, delay: 0.5, ease: "easeInOut" }}
-      />
-      {/* A bright dot rides the heartbeat while the page gets ready */}
-      <motion.circle
-        r="5"
-        fill="var(--color-accent)"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 1, 0], cx: [24, 99, 131, 216], cy: [106, 82, 88, 106] }}
-        transition={{ duration: 1.1, delay: 1.3, repeat: Infinity, repeatDelay: 0.25, ease: "easeInOut" }}
-      />
-    </svg>
+const Preloader = () => {
+  const counter = useRef(null);
+  const reduce = useReducedMotion();
 
-    <motion.img
-      src="/propulseLogo.png"
-      alt=""
-      className="h-14 w-auto"
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.9, ease: EASE }}
-    />
-  </motion.div>
-);
+  // The counter writes straight to the page so it never re-renders React
+  useEffect(() => {
+    const node = counter.current;
+    if (!node) return;
+    if (reduce) {
+      node.textContent = "100";
+      return;
+    }
+
+    const controls = animate(0, 100, {
+      duration: PRELOADER_SECONDS,
+      ease: [0.3, 0, 0.2, 1],
+      onUpdate: (value) => {
+        node.textContent = String(Math.round(value)).padStart(2, "0");
+      },
+    });
+    return () => controls.stop();
+  }, [reduce]);
+
+  return (
+    <motion.div
+      role="status"
+      aria-label="Loading Propulse"
+      className="fixed inset-0 z-[60] flex flex-col overflow-hidden bg-ink text-white"
+      exit={{
+        y: "-100%",
+        borderBottomLeftRadius: "50% 18%",
+        borderBottomRightRadius: "50% 18%",
+      }}
+      transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+    >
+      {/* A heartbeat trace across the whole window, drawn as the page loads */}
+      <svg
+        viewBox="0 0 1200 200"
+        preserveAspectRatio="none"
+        className="absolute inset-x-0 top-1/2 h-48 w-full -translate-y-1/2 opacity-25"
+        fill="none"
+        aria-hidden="true"
+      >
+        <motion.path
+          d="M0 100 H430 L465 40 L520 170 L575 55 L610 100 H780 L800 78 L825 122 L845 100 H1200"
+          stroke="var(--color-accent)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: PRELOADER_SECONDS, ease: "easeInOut" }}
+        />
+      </svg>
+
+      <motion.div
+        className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6"
+        exit={{ opacity: 0, y: -40 }}
+        transition={{ duration: 0.5, ease: EASE }}
+      >
+        <BrandMark animate roof="#fdfefd" className="w-28 sm:w-36" />
+
+        {/* Each letter rises out of its own slot */}
+        <p className="flex overflow-hidden text-5xl font-semibold tracking-tight sm:text-7xl" aria-hidden="true">
+          {LETTERS.map((letter, index) => (
+            <motion.span
+              key={index}
+              className="inline-block"
+              initial={{ y: "110%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 + index * 0.06, ease: EASE }}
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </p>
+
+        <motion.p
+          className="text-white/60"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.3 }}
+        >
+          Property from verified partners across Nigeria
+        </motion.p>
+      </motion.div>
+
+      <div className="relative flex items-end justify-between gap-6 px-6 pb-8 sm:px-10">
+        <p className="text-sm uppercase tracking-[0.18em] text-white/50">Loading</p>
+        <p className="text-6xl font-semibold leading-none tracking-tighter tabular-nums sm:text-8xl">
+          <span ref={counter}>00</span>
+          <span className="text-accent">%</span>
+        </p>
+      </div>
+
+      {/* Progress along the bottom edge */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-1 origin-left bg-accent"
+        initial={{ scaleX: reduce ? 1 : 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: reduce ? 0 : PRELOADER_SECONDS, ease: [0.3, 0, 0.2, 1] }}
+      />
+    </motion.div>
+  );
+};
 
 export default Preloader;

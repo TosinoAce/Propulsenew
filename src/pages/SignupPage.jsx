@@ -137,7 +137,7 @@ const SignupPage = () => {
   return (
     <AuthShell
       title="Create your account"
-      text="Save listings and reach realtors in a tap."
+      text="Save listings and reach our partners in a tap."
       footer={
         <>
           Already have an account?{" "}

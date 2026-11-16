@@ -1,0 +1,9 @@
+# Propulse
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /savedproperties
+
+Sitemap: https://propulse.example.com/sitemap.xml

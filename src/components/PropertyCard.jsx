@@ -1,15 +1,36 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, MapPin, Ruler, X } from "lucide-react";
 import ListingImage from "./ListingImage";
+import PartnerBadge from "./PartnerBadge";
 import Tilt from "./motion/Tilt";
+import { LISTING_STATUS } from "../lib/constants";
+import { SIZES } from "../lib/images";
+
+/** Label for listings that are no longer simply available. Renders nothing for available ones. */
+export const StatusLabel = ({ status, className = "" }) => {
+  if (!status || status === "available") return null;
+
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-sm font-medium ${
+        status === "sold" ? "bg-ink text-white" : "bg-accent text-ink"
+      } ${className}`}
+    >
+      {LISTING_STATUS[status] ?? status}
+    </span>
+  );
+};
 
 /**
- * Listing card used on the home page, the properties page, saved properties and
- * "similar properties". The whole card leans toward the cursor and is one link.
+ * Listing card used on the home page, the properties page, saved properties, partner pages
+ * and "similar properties". The whole card leans toward the cursor and is one link.
  * `feature` makes the photo taller for a lead card.
  */
 const PropertyCard = ({ property, feature = false, onRemove }) => {
-  const { id, propertyImage, propertyName, propertyLocation, propertyPrice, propertyDetails, propertyTypeTag } = property;
+  const {
+    id, propertyImage, propertyName, propertyLocation, propertyPrice,
+    propertyDetails, propertyTypeTag, partner, status,
+  } = property;
 
   return (
     <Tilt max={4} className="h-full">
@@ -26,12 +47,16 @@ const PropertyCard = ({ property, feature = false, onRemove }) => {
           >
             <ListingImage
               src={propertyImage}
+              sizes={feature ? SIZES.half : SIZES.third}
               loading="lazy"
-              className="transition-transform duration-700 ease-out-expo group-hover:scale-[1.06]"
+              className={`transition-transform duration-700 ease-out-expo group-hover:scale-[1.06] ${
+                status === "sold" ? "grayscale" : ""
+              }`}
             />
+            <StatusLabel status={status} className="absolute left-3 top-3 shadow-card" />
           </div>
 
-          <div className="flex flex-col px-3 pb-2 pt-4">
+          <div className={`flex flex-col px-3 pb-2 pt-4 ${feature ? "" : "flex-1"}`}>
             <div className="flex flex-wrap items-center gap-2 text-sm">
               {propertyTypeTag && (
                 <span className="rounded-full bg-accent-soft px-3 py-1 font-medium text-accent-deep">
@@ -54,7 +79,11 @@ const PropertyCard = ({ property, feature = false, onRemove }) => {
               {propertyLocation}
             </p>
 
-            <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4">
+            {partner && <div className="mt-3"><PartnerBadge partner={partner} /></div>}
+
+            {/* The price row sits on the card's bottom edge so cards in a row line up */}
+            <div className="mt-auto pt-4">
+            <div className="flex items-center justify-between gap-3 border-t border-line pt-4">
               <p className={`font-semibold tracking-tight text-ink ${feature ? "text-3xl" : "text-2xl"}`}>
                 <span className="text-accent-deep">₦</span>
                 {propertyPrice}
@@ -66,6 +95,7 @@ const PropertyCard = ({ property, feature = false, onRemove }) => {
                   aria-hidden="true"
                 />
               </span>
+            </div>
             </div>
           </div>
         </Link>

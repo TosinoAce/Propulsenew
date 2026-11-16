@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import MainLayout from "../layout/MainLayout";
+import Seo from "../components/Seo";
 import Button from "../components/button";
 import Magnetic from "../components/motion/Magnetic";
 
@@ -41,6 +42,7 @@ const NotFound = () => {
 
   return (
     <MainLayout>
+      <Seo title="Page not found" noindex />
       <section className="shell pt-28">
         <motion.div
           ref={plot}

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
-import { ChevronDown, Heart, LogOut, Mail, Menu, X } from "lucide-react";
+import { ChevronDown, Heart, LayoutDashboard, LogOut, Menu, X } from "lucide-react";
+import { getInitials } from "../lib/constants";
 import Button from "./button";
 import { useAuth } from "../auth/AuthContext";
 
@@ -10,20 +11,14 @@ const NAV_LINKS = [
   { to: "/property", label: "Properties" },
   { to: "/landbanking", label: "Land Banking" },
   { to: "/about", label: "About Us" },
+  { to: "/blog", label: "Blog" },
+  { to: "/contact", label: "Contact" },
 ];
 
 const EASE = [0.16, 1, 0.3, 1];
 
-const getInitials = (name) =>
-  name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join("");
-
 const Navbar = () => {
-  const { user, isAuthLoading, handleLogout } = useAuth();
+  const { user, isAuthLoading, isAdmin, handleLogout } = useAuth();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -82,7 +77,7 @@ const Navbar = () => {
           <img src="/propulseLogo.png" alt="Propulse" className="h-14 w-auto" />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-8 xl:flex">
           {NAV_LINKS.map((link) => (
             <NavLink key={link.to} to={link.to} end={link.end} className={linkClass}>
               {link.label}
@@ -90,7 +85,7 @@ const Navbar = () => {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           {user ? (
             <div className="relative" ref={menuRef}>
               <button
@@ -121,13 +116,15 @@ const Navbar = () => {
                     transition={{ duration: 0.25, ease: EASE }}
                     className="absolute right-0 top-full mt-2 w-60 origin-top-right rounded-2xl border border-line bg-panel p-2 shadow-lift"
                   >
+                    {isAdmin && (
+                      <Link role="menuitem" to="/admin" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] hover:bg-tint">
+                        <LayoutDashboard className="size-4 text-muted" strokeWidth={1.75} aria-hidden="true" />
+                        Admin
+                      </Link>
+                    )}
                     <Link role="menuitem" to="/savedproperties" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] hover:bg-tint">
                       <Heart className="size-4 text-muted" strokeWidth={1.75} aria-hidden="true" />
                       Saved Properties
-                    </Link>
-                    <Link role="menuitem" to="/contact" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] hover:bg-tint">
-                      <Mail className="size-4 text-muted" strokeWidth={1.75} aria-hidden="true" />
-                      Get in Touch
                     </Link>
                     <button
                       role="menuitem"
@@ -154,7 +151,7 @@ const Navbar = () => {
 
         <button
           type="button"
-          className="flex size-11 items-center justify-center rounded-full border border-line bg-panel lg:hidden"
+          className="flex size-11 items-center justify-center rounded-full border border-line bg-panel xl:hidden"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((open) => !open)}
@@ -174,7 +171,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3, ease: EASE }}
-            className="border-t border-line bg-surface lg:hidden"
+            className="border-t border-line bg-surface xl:hidden"
           >
             <nav aria-label="Mobile" className="shell flex flex-col py-4">
               {NAV_LINKS.map((link) => (
@@ -192,11 +189,13 @@ const Navbar = () => {
 
               {user ? (
                 <>
+                  {isAdmin && (
+                    <NavLink to="/admin" className="border-b border-line py-3.5 text-lg text-muted">
+                      Admin
+                    </NavLink>
+                  )}
                   <NavLink to="/savedproperties" className="border-b border-line py-3.5 text-lg text-muted">
                     Saved Properties
-                  </NavLink>
-                  <NavLink to="/contact" className="border-b border-line py-3.5 text-lg text-muted">
-                    Get in Touch
                   </NavLink>
                   <div className="flex items-center justify-between gap-4 pt-5">
                     <p className="truncate text-muted">Signed in as <span className="text-ink">{displayName}</span></p>
@@ -205,9 +204,6 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <NavLink to="/contact" className="border-b border-line py-3.5 text-lg text-muted">
-                    Get in Touch
-                  </NavLink>
                   {!isAuthLoading && (
                     <div className="grid grid-cols-2 gap-3 pt-5">
                       <Button to="/login" variant="secondary">Sign in</Button>

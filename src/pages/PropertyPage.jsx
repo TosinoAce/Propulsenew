@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Building2, ChevronLeft, ChevronRight, Search, SearchX, X } from "lucide-react";
 import MainLayout from "../layout/MainLayout";
@@ -8,7 +8,10 @@ import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
 import PropertyCard, { PropertyCardSkeleton } from "../components/PropertyCard";
 import Reveal from "../components/Reveal";
-import { LOCATIONS, PROPERTY_TYPES, useProperties } from "../lib/useProperties";
+import Select from "../components/Select";
+import { PROPERTY_TYPES, shortStateName, stateFromSlug, stateSlug } from "../lib/constants";
+import Seo, { absoluteUrl, breadcrumbs } from "../components/Seo";
+import { getListingStates, useProperties } from "../lib/useProperties";
 
 const ITEMS_PER_PAGE = 9;
 const ONE_MILLION = 1000000;
@@ -58,10 +61,15 @@ const PropertyPage = () => {
 
   // Filters live in the URL so a search can be shared, bookmarked and stepped back through
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  // A state page (/property/in/lagos-state) fixes the state; otherwise it comes from ?location=
+  const { state: stateParam } = useParams();
+  const pageState = stateParam ? stateFromSlug(stateParam) : undefined;
   const search = searchParams.get("q") ?? "";
-  const location = searchParams.get("location") ?? "";
+  const location = pageState ?? searchParams.get("location") ?? "";
   const type = searchParams.get("type") ?? "";
   const price = searchParams.get("price") ?? "";
+  const partnerSlug = searchParams.get("partner") ?? "";
   const sort = SORTS[searchParams.get("sort")] ? searchParams.get("sort") : "newest";
   const requestedPage = Number(searchParams.get("page")) || 1;
 
@@ -79,9 +87,19 @@ const PropertyPage = () => {
     );
   };
 
-  const clearFilters = () => setSearchParams({}, { replace: true });
+  const clearFilters = () => (pageState ? navigate("/property") : setSearchParams({}, { replace: true }));
 
-  const hasFilters = Boolean(search || location || type || price);
+  // Choosing a state opens that state's own page, keeping the other filters
+  const changeState = (value) => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("location");
+    next.delete("page");
+    const query = next.toString() ? `?${next}` : "";
+    navigate(value ? `/property/in/${stateSlug(value)}${query}` : `/property${query}`);
+  };
+
+  const states = getListingStates(properties);
+  const hasFilters = Boolean(search || location || type || price || partnerSlug);
   const searchTerm = search.trim().toLowerCase();
 
   const filtered = properties
@@ -91,6 +109,7 @@ const PropertyPage = () => {
       if (price === "below" && !(amount < ONE_MILLION)) return false;
       if (price === "above" && !(amount >= ONE_MILLION)) return false;
       if (location && property.propertyLocationTag !== location) return false;
+      if (partnerSlug && property.partner?.slug !== partnerSlug) return false;
       if (type && property.propertyTypeTag !== type) return false;
       if (
         searchTerm &&
@@ -176,14 +195,43 @@ const PropertyPage = () => {
 
   return (
     <MainLayout>
+      <Seo
+        title={pageState ? `Land and houses for sale in ${pageState}` : "Property for sale in Nigeria"}
+        description={
+          pageState
+            ? `Browse land and houses for sale in ${pageState}, Nigeria, from verified Propulse partners. Compare prices, sizes and title documents, then contact the partner directly.`
+            : "Browse land and houses for sale across Nigeria from verified partners. Filter by state, property type and budget, compare prices and title documents, then contact the partner directly."
+        }
+        jsonLd={[
+          breadcrumbs([
+            { name: "Home", path: "/" },
+            { name: "Properties", path: "/property" },
+            ...(pageState ? [{ name: pageState, path: `/property/in/${stateParam}` }] : []),
+          ]),
+          !loading && filtered.length > 0 && {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: visible.map((property, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: absoluteUrl(`/property/${property.id}`),
+              name: property.propertyName,
+            })),
+          },
+        ]}
+      />
       <PageHeader
-        title="Available properties"
-        text="Land and houses across Kwara and Lagos State. Search by name, pick a state and type, and sort by price."
+        title={pageState ? `Property in ${shortStateName(pageState)}` : "Available properties"}
+        text={
+          pageState
+            ? `Land and houses for sale in ${pageState} from our verified partners. Search by name, pick a type, and sort by price.`
+            : "Land and houses from our verified partners across Nigeria. Search by name, pick a state and type, and sort by price."
+        }
       />
 
       <section className="shell">
         <Reveal className="rounded-3xl border border-line bg-panel p-4 shadow-card sm:p-5">
-          <div className="grid gap-3 lg:grid-cols-[1fr_auto_auto]">
+          <div className="grid gap-3 lg:grid-cols-[1fr_auto_auto_auto]">
             <label className="relative block">
               <span className="sr-only">Search properties</span>
               <Search
@@ -199,35 +247,37 @@ const PropertyPage = () => {
                 onChange={(e) => updateParam("q", e.target.value)}
               />
             </label>
-            <select
-              className="field-input !min-h-12 !rounded-full !px-5"
+            <Select
+              pill
+              className="!min-h-12 lg:w-44"
+              aria-label="State"
+              value={location}
+              onChange={changeState}
+              options={[{ value: "", label: "All states" }, ...states]}
+            />
+            <Select
+              pill
+              className="!min-h-12 lg:w-52"
               aria-label="Budget"
               value={price}
-              onChange={(e) => updateParam("price", e.target.value)}
-            >
-              <option value="">Any budget</option>
-              <option value="below">Below ₦1 million</option>
-              <option value="above">₦1 million and above</option>
-            </select>
-            <select
-              className="field-input !min-h-12 !rounded-full !px-5"
+              onChange={(value) => updateParam("price", value)}
+              options={[
+                { value: "", label: "Any budget" },
+                { value: "below", label: "Below ₦1 million" },
+                { value: "above", label: "₦1 million and above" },
+              ]}
+            />
+            <Select
+              pill
+              className="!min-h-12 lg:w-52"
               aria-label="Sort by"
               value={sort}
-              onChange={(e) => updateParam("sort", e.target.value === "newest" ? "" : e.target.value)}
-            >
-              {Object.entries(SORTS).map(([key, option]) => (
-                <option key={key} value={key}>{option.label}</option>
-              ))}
-            </select>
+              onChange={(value) => updateParam("sort", value === "newest" ? "" : value)}
+              options={Object.entries(SORTS).map(([key, option]) => ({ value: key, label: option.label }))}
+            />
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-line pt-4">
-            <Segmented
-              label="State"
-              value={location}
-              onChange={(value) => updateParam("location", value)}
-              options={[{ value: "", label: "All states" }, ...LOCATIONS.map((entry) => ({ value: entry, label: entry }))]}
-            />
             <Segmented
               label="Property type"
               value={type}

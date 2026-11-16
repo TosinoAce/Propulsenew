@@ -56,7 +56,7 @@ const InquiryModal = ({ property, user, onClose }) => {
       setStatus({
         state: "error",
         message: property.realtorContact
-          ? `We could not send your inquiry. Please call the realtor directly on ${property.realtorContact}.`
+          ? `We could not send your inquiry. Please call the partner directly on ${property.realtorContact}.`
           : "We could not send your inquiry. Please try again.",
       });
     }
@@ -85,10 +85,12 @@ const InquiryModal = ({ property, user, onClose }) => {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 id="inquiry-title" className="text-2xl font-semibold tracking-tight text-ink">
-              Contact the realtor
+              Contact the partner
             </h2>
             <p className="mt-1 text-muted">
-              {property.realtorName ? `Your message goes to ${property.realtorName}.` : "Your message goes to the realtor for this property."}
+              {property.partner?.name || property.realtorName
+                ? `Your message goes to ${property.partner?.name || property.realtorName}.`
+                : "Your message goes to the partner for this property."}
             </p>
           </div>
           <button
@@ -106,7 +108,7 @@ const InquiryModal = ({ property, user, onClose }) => {
             <CircleCheck className="size-12 text-success" strokeWidth={1.5} aria-hidden="true" />
             <h3 className="text-xl font-semibold text-ink">Inquiry sent</h3>
             <p className="max-w-sm leading-relaxed text-muted">
-              Your message about {property.propertyName} is on its way. The realtor will get back
+              Your message about {property.propertyName} is on its way. The partner will get back
               to you soon.
             </p>
             <Button className="mt-3" onClick={onClose}>Done</Button>

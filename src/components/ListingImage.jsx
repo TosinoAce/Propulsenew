@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { ImageOff } from "lucide-react";
+import { SIZES, responsiveImage } from "../lib/images";
 
 /**
- * Property photo that fills its parent. If the file is missing or fails to load,
- * a quiet "no photo" panel takes its place instead of a broken-image icon.
+ * Property photo that fills its parent. Local photos are served as compressed WebP at the
+ * size the layout needs (`sizes`). If the file is missing or fails to load, a quiet
+ * "no photo" panel takes its place instead of a broken-image icon.
  */
-const ListingImage = ({ src, alt = "", className = "", ...rest }) => {
+const ListingImage = ({ src, alt = "", className = "", sizes = SIZES.third, ...rest }) => {
   const [failed, setFailed] = useState(false);
 
   if (!src || failed) {
@@ -19,8 +21,9 @@ const ListingImage = ({ src, alt = "", className = "", ...rest }) => {
 
   return (
     <img
-      src={src}
+      {...responsiveImage(src, sizes)}
       alt={alt}
+      decoding="async"
       onError={() => setFailed(true)}
       className={`absolute inset-0 size-full object-cover ${className}`}
       {...rest}

@@ -1,6 +1,7 @@
 import { Heart, MessagesSquare } from "lucide-react";
 import Reveal from "../Reveal";
 import Spotlight from "../motion/Spotlight";
+import { SIZES, responsiveImage } from "../../lib/images";
 
 const cellBase = "relative overflow-hidden rounded-3xl p-8 sm:p-10";
 
@@ -16,15 +17,15 @@ const WhyPropulse = () => (
     <div className="grid gap-5 lg:grid-cols-12">
       <Reveal className={`${cellBase} flex min-h-[22rem] flex-col justify-end bg-tint lg:col-span-7`}>
         <img
-          src="/Vector-2.png"
+          {...responsiveImage("/photos/victorian-houses.png", "480px")}
           alt=""
           loading="lazy"
           className="pointer-events-none absolute -right-10 -top-10 h-[115%] w-auto max-w-none opacity-95 sm:-right-4"
         />
         <div className="relative max-w-xs">
-          <h3 className="text-2xl font-semibold tracking-tight text-ink">Listings picked with care</h3>
+          <h3 className="text-2xl font-semibold tracking-tight text-ink">Only verified partners</h3>
           <p className="mt-2 leading-relaxed text-muted">
-            Every property is reviewed before it goes live, so you spend time only on real options.
+            Every listing comes from a partner we have vetted, so you spend time only on real options.
           </p>
         </div>
       </Reveal>
@@ -33,9 +34,9 @@ const WhyPropulse = () => (
         <Spotlight tone="dark" className="flex h-full min-h-[22rem] flex-col justify-between rounded-3xl bg-ink p-8 text-white sm:p-10">
         <MessagesSquare className="relative size-10 text-accent" strokeWidth={1.5} aria-hidden="true" />
         <div className="relative">
-          <h3 className="text-2xl font-semibold tracking-tight">A direct line to the realtor</h3>
+          <h3 className="text-2xl font-semibold tracking-tight">A direct line to the partner</h3>
           <p className="mt-2 leading-relaxed text-white/75">
-            Each listing names its realtor and gives you three ways to reach them: inquiry, phone
+            Each listing names its partner and gives you three ways to reach them: inquiry, phone
             call or WhatsApp.
           </p>
         </div>
@@ -57,16 +58,16 @@ const WhyPropulse = () => (
 
       <Reveal delay={0.08} className={`${cellBase} flex min-h-[20rem] flex-col justify-end lg:col-span-7`}>
         <img
-          src="/image.png"
+          {...responsiveImage("/photos/bungalow.png", SIZES.half)}
           alt="A yellow bungalow with a covered porch and a wide front lawn"
           loading="lazy"
           className="absolute inset-0 size-full object-cover transition-transform duration-[1200ms] ease-out-expo hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/30 to-transparent" aria-hidden="true" />
         <div className="relative max-w-sm text-white">
-          <h3 className="text-2xl font-semibold tracking-tight">Two states, one search</h3>
+          <h3 className="text-2xl font-semibold tracking-tight">One search, across Nigeria</h3>
           <p className="mt-2 leading-relaxed text-white/85">
-            Land and houses in Kwara and Lagos State, side by side and filterable in seconds.
+            Land and houses from every state we cover, side by side and filterable in seconds.
           </p>
         </div>
       </Reveal>

@@ -1,13 +1,7 @@
 import Reveal from "../Reveal";
+import { responsiveImage } from "../../lib/images";
 
-const IMAGES = [
-  "/Rectangle7.png",
-  "/Rectangle8.png",
-  "/Rectangle9.png",
-  "/Rectangle10.png",
-  "/Rectangle11.png",
-  "/Rectangle12.png",
-];
+const IMAGES = [1, 2, 3, 4, 5, 6].map((n) => `/photos/gallery-${n}.png`);
 
 /**
  * A slow strip of property photography. The track holds the images twice and slides by
@@ -26,7 +20,7 @@ const Gallery = () => (
       {[...IMAGES, ...IMAGES].map((src, index) => (
         <img
           key={index}
-          src={src}
+          {...responsiveImage(src, "320px")}
           alt=""
           loading="lazy"
           aria-hidden={index >= IMAGES.length}

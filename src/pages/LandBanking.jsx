@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { CircleCheck, Landmark, ShieldCheck, TrendingUp } from "lucide-react";
 import MainLayout from "../layout/MainLayout";
+import Seo from "../components/Seo";
 import Button from "../components/button";
 import Field from "../components/Field";
 import Reveal from "../components/Reveal";
@@ -57,7 +58,7 @@ const LandBanking = () => {
 
     setStatus({ state: "sending", message: "" });
     try {
-      await sendInquiry({ ...payload, user });
+      await sendInquiry({ ...payload, user, topic: "Land banking waitlist" });
       setStatus({ state: "sent", message: "" });
     } catch (err) {
       console.error("Waitlist signup failed:", err);
@@ -67,6 +68,11 @@ const LandBanking = () => {
 
   return (
     <MainLayout>
+      <Seo
+        title="Land banking in Nigeria"
+        description="Land banking with Propulse: buy land in growing areas of Nigeria and hold it as the area develops. Join the waitlist to hear when it opens."
+        image="/photos/land-plots-1280.webp"
+      />
       <section className="shell grid gap-12 pb-4 pt-32 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-20 lg:pt-40">
         <motion.div
           initial={{ opacity: 0, y: 24 }}

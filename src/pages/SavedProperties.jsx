@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Heart, LogIn } from "lucide-react";
 import supabase from "../lib/supabase";
 import MainLayout from "../layout/MainLayout";
+import Seo from "../components/Seo";
 import Button from "../components/button";
 import EmptyState from "../components/EmptyState";
 import PageHeader from "../components/PageHeader";
@@ -129,9 +130,10 @@ const SavedProperties = () => {
 
   return (
     <MainLayout>
+      <Seo title="Saved properties" noindex />
       <PageHeader
         title="Saved properties"
-        text="The listings you have shortlisted. Open one to contact its realtor, or remove the ones you have ruled out."
+        text="The listings you have shortlisted. Open one to contact its partner, or remove the ones you have ruled out."
       />
       <section className="shell">
         {error && (

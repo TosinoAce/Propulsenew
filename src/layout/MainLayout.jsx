@@ -1,8 +1,9 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ScrollProgress from '../components/motion/ScrollProgress'
-import { motion } from 'motion/react'
 
+// Pages are not faded in as a whole: each section animates in on its own, and the first
+// thing on screen is painted straight away, which matters on slow mobile connections.
 const MainLayout = ({ children }) => {
   return (
     <div className="flex min-h-[100dvh] flex-col">
@@ -14,16 +15,9 @@ const MainLayout = ({ children }) => {
       </a>
       <ScrollProgress />
       <Navbar />
-      {/* Each page fades in as it opens */}
-      <motion.main
-        id="main"
-        className="flex-1"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >
+      <main id="main" className="flex-1">
         {children}
-      </motion.main>
+      </main>
       <Footer />
     </div>
   )

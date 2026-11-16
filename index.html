@@ -1,13 +1,81 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-NG">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Propulse is a real estate platform for finding land and houses in Kwara and Lagos State and connecting directly with trusted realtors." />
-    <link rel="icon" type="image/png" href="/smallLogo.png" />
-    <title>Propulse | Find Property and Connect with Realtors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Propulse | Land and houses for sale in Nigeria from verified partners</title>
+    <meta name="description" content="Browse land and houses for sale across Nigeria, from Lagos and Abuja to Kwara and Rivers. Every listing comes from a verified partner you can contact directly." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#f6f8f7" />
+
+    <!-- Audience: Nigeria -->
+    <meta name="geo.region" content="NG" />
+    <meta name="geo.placename" content="Nigeria" />
+    <meta property="og:locale" content="en_NG" />
+
+    <!-- Sharing previews (each page updates these as it opens) -->
+    <meta property="og:site_name" content="Propulse" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Propulse | Land and houses for sale in Nigeria from verified partners" />
+    <meta property="og:description" content="Browse land and houses for sale across Nigeria. Every listing comes from a verified partner you can contact directly." />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Start talking to the database while the page loads -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin />
+    <link rel="dns-prefetch" href="%VITE_SUPABASE_URL%" />
+
+    <!-- On the home page, start downloading the opening photo before the app code arrives -->
+    <script>
+      if (location.pathname === "/") {
+        var hero = document.createElement("link");
+        hero.rel = "preload";
+        hero.as = "image";
+        hero.type = "image/webp";
+        hero.setAttribute("fetchpriority", "high");
+        hero.setAttribute("imagesrcset", "/listings/house-11-640.webp 640w, /listings/house-11-1280.webp 1280w");
+        hero.setAttribute("imagesizes", "(min-width: 1280px) 1216px, 100vw");
+        document.head.appendChild(hero);
+      }
+    </script>
+
+    <!-- Who Propulse is, for search engines -->
+    <script type="application/ld+json">
+      [
+        {
+          "@context": "https://schema.org",
+          "@type": "RealEstateAgent",
+          "name": "Propulse",
+          "description": "Propulse lists land and houses for sale from verified partners across Nigeria.",
+          "logo": "/apple-touch-icon.png",
+          "areaServed": { "@type": "Country", "name": "Nigeria" },
+          "address": { "@type": "PostalAddress", "addressLocality": "Ilorin", "addressRegion": "Kwara State", "addressCountry": "NG" }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Propulse",
+          "inLanguage": "en-NG",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "/property?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    </script>
   </head>
   <body>
+    <noscript>
+      Propulse lists land and houses for sale from verified partners across Nigeria. Please turn on JavaScript to browse the listings.
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

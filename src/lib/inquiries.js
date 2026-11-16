@@ -11,18 +11,19 @@ export const validateInquiry = ({ name, email, message }) => {
 };
 
 /**
- * Stores a message for a realtor (when `property` is given) or a general
- * contact message. Throws if the message could not be saved.
+ * Stores a message for a partner (when `property` is given) or a general
+ * contact message, with an optional topic. Throws if the message could not be saved.
  */
-export const sendInquiry = async ({ name, email, phone, message, property, user }) => {
+export const sendInquiry = async ({ name, email, phone, message, property, user, topic }) => {
   const { error } = await supabase.from("inquiries").insert({
     property_id: property?.id ?? null,
-    realtor_name: property?.realtorName ?? null,
+    realtor_name: property?.partner?.name ?? property?.realtorName ?? null,
     user_id: user?.id ?? null,
     name: name.trim(),
     email: email.trim(),
     phone: phone?.trim() || null,
     message: message.trim(),
+    topic: topic || null,
   });
 
   if (error) throw error;

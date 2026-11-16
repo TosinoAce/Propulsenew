@@ -64,7 +64,7 @@ const Featured = ({ properties, loading, error }) => {
             Fresh on the market
           </h2>
           <p className="mt-4 max-w-[52ch] text-lg leading-relaxed text-muted">
-            The newest land and houses added to Propulse.
+            The newest land and houses from our verified partners.
           </p>
         </div>
         <Button to="/property" variant="secondary">

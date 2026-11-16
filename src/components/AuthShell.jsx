@@ -2,16 +2,19 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { Eye, EyeOff } from "lucide-react";
+import { responsiveImage } from "../lib/images";
+import Seo from "./Seo";
 
 const EASE = [0.16, 1, 0.3, 1];
 
 /** Two-panel frame shared by the sign in and sign up pages: photo on one side, form on the other. */
 const AuthShell = ({ title, text, footer, children }) => (
   <div className="grid min-h-[100dvh] lg:grid-cols-2">
+    <Seo title={title} noindex />
     <div className="relative hidden overflow-hidden lg:block">
       {/* The photo eases back as the page opens */}
       <motion.img
-        src="/image.png"
+        {...responsiveImage("/photos/bungalow.png", "50vw")}
         alt="A yellow bungalow with a covered porch and a wide front lawn"
         className="absolute inset-0 size-full object-cover"
         initial={{ scale: 1.12 }}
@@ -25,7 +28,7 @@ const AuthShell = ({ title, text, footer, children }) => (
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
       >
-        Land and homes across Kwara and Lagos State, with the realtor one message away.
+        Land and homes from verified partners across Nigeria, one message away.
       </motion.p>
     </div>
 
